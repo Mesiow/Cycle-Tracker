@@ -12,7 +12,7 @@ class RidesViewController: UIViewController {
     var ridesTableView = UITableView();
     var titleLabelView = UILabel();
     var ridesImageView = UIImageView();
-    var startButton = UIButton();
+    var startButton = CTButton(color: .systemGreen, title: "Start New Ride");
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +25,10 @@ class RidesViewController: UIViewController {
         configUI();
     }
     
-    
+    @objc func startButtonPressed(){
+        var goalVC = SetRideGoalVC();
+        present(goalVC, animated: true);
+    }
     
     
     func configUI(){
@@ -42,7 +45,7 @@ class RidesViewController: UIViewController {
         startButton.translatesAutoresizingMaskIntoConstraints = false;
         
         //configure table view
-        ridesTableView.register(UITableViewCell.self, forCellReuseIdentifier: "RideCell"); //register a default cell for use
+        ridesTableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.ridesCellIdentifier); //register a default cell for use
         
         //Table view constraints
         NSLayoutConstraint.activate([
@@ -65,28 +68,20 @@ class RidesViewController: UIViewController {
         
         //Configure constraints for simple system image
         ridesImageView.image = UIImage(systemName: "bicycle");
+        ridesImageView.tintColor = .systemGreen;
         NSLayoutConstraint.activate([
             ridesImageView.widthAnchor.constraint(equalToConstant: 30),
-            ridesImageView.heightAnchor.constraint(equalToConstant: 20),
+            ridesImageView.heightAnchor.constraint(equalToConstant: 22),
             ridesImageView.leadingAnchor.constraint(equalTo: titleLabelView.trailingAnchor, constant: 5),
             ridesImageView.bottomAnchor.constraint(equalTo: ridesTableView.topAnchor, constant: -30)
         ])
         
         //Configure button below table view
-        
-        var config = startButton.configuration;
-        config = .tinted();
-        config?.title = "Start New Ride";
-        config?.titleAlignment = .center;
-        config?.baseBackgroundColor = .systemGreen;
-        config?.baseForegroundColor = .systemGreen;
-        config?.cornerStyle = .medium;
-        
-        startButton.configuration = config;
+        startButton.addTarget(self, action: #selector(startButtonPressed), for: .touchUpInside); //add callback function to fire when button is pressed
         
         NSLayoutConstraint.activate([
-            startButton.widthAnchor.constraint(equalToConstant: 260),
-            startButton.heightAnchor.constraint(equalToConstant: 50),
+            //width/height constraints already set in CTButton class by default
+            
             startButton.centerXAnchor.constraint(equalTo: ridesTableView.centerXAnchor),
             startButton.topAnchor.constraint(equalTo: ridesTableView.bottomAnchor, constant: 20)
         ])
@@ -100,7 +95,7 @@ extension RidesViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = ridesTableView.dequeueReusableCell(withIdentifier: "RideCell", for: indexPath);
+        let cell = ridesTableView.dequeueReusableCell(withIdentifier: Constants.ridesCellIdentifier, for: indexPath);
         var config = cell.defaultContentConfiguration();
         config.text = "Ride #\(indexPath.row)";
         cell.contentConfiguration = config;

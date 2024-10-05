@@ -13,6 +13,9 @@
 		C0C321222CB05F0E00D377DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0C321212CB05F0E00D377DA /* Assets.xcassets */; };
 		C0C321252CB05F0E00D377DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0C321232CB05F0E00D377DA /* LaunchScreen.storyboard */; };
 		C0C3212D2CB05FDC00D377DA /* RidesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C3212C2CB05FDC00D377DA /* RidesViewController.swift */; };
+		C0C3212F2CB18C8900D377DA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C3212E2CB18C8900D377DA /* Constants.swift */; };
+		C0C321312CB18DF200D377DA /* SetRideGoalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C321302CB18DF200D377DA /* SetRideGoalVC.swift */; };
+		C0C321332CB18FDE00D377DA /* CTButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C321322CB18FDE00D377DA /* CTButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		C0C321242CB05F0E00D377DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C0C321262CB05F0E00D377DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0C3212C2CB05FDC00D377DA /* RidesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RidesViewController.swift; sourceTree = "<group>"; };
+		C0C3212E2CB18C8900D377DA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		C0C321302CB18DF200D377DA /* SetRideGoalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetRideGoalVC.swift; sourceTree = "<group>"; };
+		C0C321322CB18FDE00D377DA /* CTButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +65,9 @@
 				C0C321152CB05F0C00D377DA /* AppDelegate.swift */,
 				C0C321172CB05F0C00D377DA /* SceneDelegate.swift */,
 				C0C3212C2CB05FDC00D377DA /* RidesViewController.swift */,
+				C0C321302CB18DF200D377DA /* SetRideGoalVC.swift */,
+				C0C321322CB18FDE00D377DA /* CTButton.swift */,
+				C0C3212E2CB18C8900D377DA /* Constants.swift */,
 				C0C321212CB05F0E00D377DA /* Assets.xcassets */,
 				C0C321232CB05F0E00D377DA /* LaunchScreen.storyboard */,
 				C0C321262CB05F0E00D377DA /* Info.plist */,
@@ -137,9 +146,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0C321332CB18FDE00D377DA /* CTButton.swift in Sources */,
+				C0C3212F2CB18C8900D377DA /* Constants.swift in Sources */,
 				C0C321202CB05F0C00D377DA /* Cycle_Tracker.xcdatamodeld in Sources */,
 				C0C321162CB05F0C00D377DA /* AppDelegate.swift in Sources */,
 				C0C3212D2CB05FDC00D377DA /* RidesViewController.swift in Sources */,
+				C0C321312CB18DF200D377DA /* SetRideGoalVC.swift in Sources */,
 				C0C321182CB05F0C00D377DA /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
