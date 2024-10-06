@@ -14,6 +14,16 @@ class SetRideGoalVC: UIViewController {
     var timeMenuButton = CTButtonMenu(color: .systemBlue, title: "Time");
     var caloriesMenuButton = CTButtonMenu(color: .systemBlue, title: "Calories");
     
+    var distances = [
+        3, 5, 10
+    ]
+    var times = [
+        10, 20, 30
+    ]
+    var cals = [
+        100, 200, 300
+    ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -52,32 +62,36 @@ class SetRideGoalVC: UIViewController {
             caloriesMenuButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         
-        //Button Menu Setup
-        distanceMenuButton.menu = UIMenu(title: "Your options...", children: [
-            UIAction(title: "3 Miles", handler: { (action) in
-                print("Option 1 was selected")
-            }), UIAction(title: "5 Miles", handler: { (action) in
-                print("Option 2 was selected")
-            }), UIAction(title: "10 Miles", handler: { (action) in
-                print("Option 3 was selected")
-            })])
+        //Button Menu Action Setup
+        configDropDownMenuActions();
+    }
+    
+    func configDropDownMenuActions(){
+        //Distance Menu Button
+        var distanceActions: [UIAction] = []
+        for i in 0..<distances.count {
+            distanceActions.insert(UIAction(title: "\(self.distances[i]) Miles", handler: { (action) in
+                self.distanceMenuButton.setText(title: "\(self.distances[i]) Miles")
+            }), at: i)
+        }
+        distanceMenuButton.menu = UIMenu(title: "Your Options...", children: distanceActions)
         
-        timeMenuButton.menu = UIMenu(title: "Your options...", children: [
-            UIAction(title: "10 Min", handler: { (action) in
-                print("Option 1 was selected")
-            }), UIAction(title: "20 Min", handler: { (action) in
-                print("Option 2 was selected")
-            }), UIAction(title: "30 Min", handler: { (action) in
-                print("Option 3 was selected")
-            })])
+        //Time Menu Button
+        var timeActions: [UIAction] = []
+        for i in 0..<times.count {
+            timeActions.insert(UIAction(title: "\(self.times[i]) Min", handler: { (action) in
+                self.timeMenuButton.setText(title: "\(self.times[i]) Min")
+            }), at: i)
+        }
+        timeMenuButton.menu = UIMenu(title: "Your Options...", children: timeActions)
         
-        caloriesMenuButton.menu = UIMenu(title: "Your options...", children: [
-            UIAction(title: "100 Calories", handler: { (action) in
-                print("Option 1 was selected")
-            }), UIAction(title: "200 Calories", handler: { (action) in
-                print("Option 2 was selected")
-            }), UIAction(title: "300 Calories", handler: { (action) in
-                print("Option 3 was selected")
-            })])
+        //Calories Menu Button
+        var calsActions: [UIAction] = [];
+        for i in 0..<cals.count {
+            calsActions.insert(UIAction(title: "\(self.cals[i]) Cals", handler: { (action) in
+                self.caloriesMenuButton.setText(title: "\(self.cals[i]) Cals")
+            }), at: i)
+        }
+        caloriesMenuButton.menu = UIMenu(title: "Your Options", children: calsActions)
     }
 }

@@ -68,8 +68,10 @@ class CTButtonMenu : UIButton {
             widthAnchor.constraint(equalToConstant: 130),
             heightAnchor.constraint(equalToConstant: 50)
         ])
-        
-        
+    }
+    
+    func setText(title: String){
+        configuration?.title = title;
     }
     
     required init?(coder: NSCoder) {
