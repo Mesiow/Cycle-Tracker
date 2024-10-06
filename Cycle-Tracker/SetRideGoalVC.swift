@@ -13,6 +13,7 @@ class SetRideGoalVC: UIViewController {
     var distanceMenuButton = CTButtonMenu(color: .systemBlue, title: "Distance");
     var timeMenuButton = CTButtonMenu(color: .systemBlue, title: "Time");
     var caloriesMenuButton = CTButtonMenu(color: .systemBlue, title: "Calories");
+    var goalLabel = UILabel();
     
     var distances = [
         3, 5, 10
@@ -31,6 +32,7 @@ class SetRideGoalVC: UIViewController {
         
         configUI();
         configDropDownButtons();
+        configLabel();
     }
     
     func configUI(){
@@ -39,6 +41,22 @@ class SetRideGoalVC: UIViewController {
         NSLayoutConstraint.activate([
             goButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             goButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
+        ])
+    }
+    
+    func configLabel(){
+        view.addSubview(goalLabel);
+        goalLabel.translatesAutoresizingMaskIntoConstraints = false;
+        
+        goalLabel.text = "Goals";
+        goalLabel.textAlignment = .left;
+        goalLabel.font = .systemFont(ofSize: 40, weight: .bold);
+        
+        //Constraints
+        NSLayoutConstraint.activate([
+            goalLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            goalLabel.leadingAnchor.constraint(equalTo: goButton.leadingAnchor, constant: -25),
+            goalLabel.trailingAnchor.constraint(equalTo: goButton.trailingAnchor)
         ])
     }
     
