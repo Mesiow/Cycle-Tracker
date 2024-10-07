@@ -16,13 +16,13 @@ class SetRideGoalVC: UIViewController {
     var goalLabel = UILabel();
     
     var distances = [
-        3, 5, 10
+        3, 5, 10, 15
     ]
     var times = [
-        10, 20, 30
+        10, 20, 30, 40
     ]
     var cals = [
-        100, 200, 300
+        100, 200, 300, 400
     ]
     
     override func viewDidLoad() {
@@ -35,6 +35,13 @@ class SetRideGoalVC: UIViewController {
         configLabel();
     }
     
+    @objc func goButtonPressed(){
+        let vc = CurrentRideVC();
+        vc.modalPresentationStyle = .fullScreen;
+        
+        present(vc, animated: true);
+    }
+    
     func configUI(){
         view.addSubview(goButton);
       
@@ -42,6 +49,8 @@ class SetRideGoalVC: UIViewController {
             goButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             goButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
         ])
+        
+        goButton.addTarget(self, action: #selector(goButtonPressed), for: .touchUpInside);
     }
     
     func configLabel(){

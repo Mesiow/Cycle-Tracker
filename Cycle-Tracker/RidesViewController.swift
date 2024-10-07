@@ -26,7 +26,7 @@ class RidesViewController: UIViewController {
     }
     
     @objc func startButtonPressed(){
-        var goalVC = SetRideGoalVC();
+        let goalVC = SetRideGoalVC();
         present(goalVC, animated: true);
     }
     
