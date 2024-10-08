@@ -17,6 +17,7 @@
 		C0C321312CB18DF200D377DA /* SetRideGoalVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C321302CB18DF200D377DA /* SetRideGoalVC.swift */; };
 		C0C321332CB18FDE00D377DA /* CTButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C321322CB18FDE00D377DA /* CTButton.swift */; };
 		C0C321352CB3281E00D377DA /* CurrentRideVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C321342CB3281E00D377DA /* CurrentRideVC.swift */; };
+		C0C321382CB4664500D377DA /* CTLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C321372CB4664500D377DA /* CTLabel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		C0C321302CB18DF200D377DA /* SetRideGoalVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetRideGoalVC.swift; sourceTree = "<group>"; };
 		C0C321322CB18FDE00D377DA /* CTButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTButton.swift; sourceTree = "<group>"; };
 		C0C321342CB3281E00D377DA /* CurrentRideVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentRideVC.swift; sourceTree = "<group>"; };
+		C0C321372CB4664500D377DA /* CTLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTLabel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,7 +71,7 @@
 				C0C3212C2CB05FDC00D377DA /* RidesViewController.swift */,
 				C0C321302CB18DF200D377DA /* SetRideGoalVC.swift */,
 				C0C321342CB3281E00D377DA /* CurrentRideVC.swift */,
-				C0C321322CB18FDE00D377DA /* CTButton.swift */,
+				C0C321362CB4662B00D377DA /* Extensions */,
 				C0C3212E2CB18C8900D377DA /* Constants.swift */,
 				C0C321212CB05F0E00D377DA /* Assets.xcassets */,
 				C0C321232CB05F0E00D377DA /* LaunchScreen.storyboard */,
@@ -77,6 +79,15 @@
 				C0C3211E2CB05F0C00D377DA /* Cycle_Tracker.xcdatamodeld */,
 			);
 			path = "Cycle-Tracker";
+			sourceTree = "<group>";
+		};
+		C0C321362CB4662B00D377DA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C0C321322CB18FDE00D377DA /* CTButton.swift */,
+				C0C321372CB4664500D377DA /* CTLabel.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -155,6 +166,7 @@
 				C0C321162CB05F0C00D377DA /* AppDelegate.swift in Sources */,
 				C0C3212D2CB05FDC00D377DA /* RidesViewController.swift in Sources */,
 				C0C321312CB18DF200D377DA /* SetRideGoalVC.swift in Sources */,
+				C0C321382CB4664500D377DA /* CTLabel.swift in Sources */,
 				C0C321352CB3281E00D377DA /* CurrentRideVC.swift in Sources */,
 				C0C321182CB05F0C00D377DA /* SceneDelegate.swift in Sources */,
 			);
