@@ -32,6 +32,18 @@ class CTButton : UIButton {
         ])
     }
     
+    func disableTint(){
+        let color = configuration?.baseBackgroundColor;
+        let title = configuration?.title;
+        
+        configuration = .filled();
+        configuration?.title = title;
+        configuration?.titleAlignment = .center;
+        configuration?.baseBackgroundColor = color;
+        configuration?.cornerStyle = .medium;
+    
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -14,20 +14,21 @@ class CurrentRideVC: UIViewController {
     var distanceTraveled = 0.0;
     
     var infoView = UIView(); //view that holds all the tracking info
+    var distBackgroundView = UIView();
     
-    var distanceTitleLabel = CTLabel(color: .systemGray, text: "Distance", font: .systemFont(ofSize: 40, weight: .semibold));
+    var distanceTitleLabel = CTLabel(color: .white, text: "Distance", font: .systemFont(ofSize: 40, weight: .semibold));
     var distanceLabel = CTLabel(color: .white, text: "0 Miles", font: .systemFont(ofSize: 25, weight: .medium));
     
-    var timeTitleLabel = CTLabel(color: .systemGray, text: "Time", font: .systemFont(ofSize: 30, weight: .semibold));
+    var timeTitleLabel = CTLabel(color: .white, text: "Time", font: .systemFont(ofSize: 30, weight: .semibold));
     var timeLabel = CTLabel(color: .white, text: "0:00 Min", font: .systemFont(ofSize: 20, weight: .medium));
     
-    var altitudeTitleLabel = CTLabel(color: .systemGray, text: "Altitude", font: .systemFont(ofSize: 30, weight: .semibold));
+    var altitudeTitleLabel = CTLabel(color: .white, text: "Altitude", font: .systemFont(ofSize: 30, weight: .semibold));
     var altituteLabel = CTLabel(color: .white, text: "0 ft", font: .systemFont(ofSize: 20, weight: .medium));
     
-    var caloriesTitleLabel = CTLabel(color: .systemGray, text: "Calories", font: .systemFont(ofSize: 30, weight: .semibold));
+    var caloriesTitleLabel = CTLabel(color: .white, text: "Calories", font: .systemFont(ofSize: 30, weight: .semibold));
     var caloriesLabel = CTLabel(color: .white, text: "0 Cals", font: .systemFont(ofSize: 20, weight: .medium));
     
-    var speedTitleLabel = CTLabel(color: .systemGray, text: "Speed", font: .systemFont(ofSize: 30, weight: .semibold));
+    var speedTitleLabel = CTLabel(color: .white, text: "Speed", font: .systemFont(ofSize: 30, weight: .semibold));
     var speedLabel = CTLabel(color: .white, text: "0 Mph", font: .systemFont(ofSize: 20, weight: .medium));
     
     var stopButton = CTButton(color: .systemRed, title: "Stop");
@@ -47,23 +48,41 @@ class CurrentRideVC: UIViewController {
     }
     
     func configUI(){
-        view.addSubview(infoView)
+        view.addSubview(infoView);
+        view.addSubview(distBackgroundView);
         view.addSubview(stopButton);
         view.addSubview(pauseButton);
         
+        distBackgroundView.translatesAutoresizingMaskIntoConstraints = false;
+        distBackgroundView.backgroundColor = UIColor.init(named: "BlueAdaptive");
+        distBackgroundView.layer.cornerRadius = 10.0;
+        
         infoView.translatesAutoresizingMaskIntoConstraints = false;
-        infoView.backgroundColor = UIColor.systemBlue.withAlphaComponent(0.2);
+        infoView.backgroundColor = UIColor.init(named: "BlueAdaptive");
         infoView.layer.cornerRadius = 10.0;
+        
+        stopButton.disableTint();
+        pauseButton.disableTint();
+        
         NSLayoutConstraint.activate([
             infoView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -20),
             infoView.heightAnchor.constraint(equalToConstant: 320),
             infoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            infoView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            infoView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 50),
         ])
         
+        //Constrain relative to info view
+        NSLayoutConstraint.activate([
+            distBackgroundView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -50),
+            distBackgroundView.heightAnchor.constraint(equalToConstant: 150),
+            distBackgroundView.centerXAnchor.constraint(equalTo: infoView.centerXAnchor),
+            distBackgroundView.bottomAnchor.constraint(equalTo: infoView.topAnchor, constant: -10)
+        ])
+        
+        //Constrain buttons
         NSLayoutConstraint.activate([
             stopButton.widthAnchor.constraint(equalToConstant: 160),
-            stopButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+            stopButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -25),
             stopButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 25),
         ])
         
@@ -75,8 +94,8 @@ class CurrentRideVC: UIViewController {
     }
     
     func configUILabels(){
-        view.addSubview(distanceTitleLabel);
-        view.addSubview(distanceLabel);
+        distBackgroundView.addSubview(distanceTitleLabel);
+        distBackgroundView.addSubview(distanceLabel);
        
         //These labels will be inside the info view
         infoView.addSubview(timeTitleLabel);
@@ -92,9 +111,10 @@ class CurrentRideVC: UIViewController {
         
         //Distance labels
         distanceTitleLabel.addUnderline();
+        //Constrain relative to distBackgroundView
         NSLayoutConstraint.activate([
-            distanceTitleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 120),
-            distanceTitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            distanceTitleLabel.centerYAnchor.constraint(equalTo: distBackgroundView.centerYAnchor, constant: -10),
+            distanceTitleLabel.centerXAnchor.constraint(equalTo: distBackgroundView.centerXAnchor)
         ])
         NSLayoutConstraint.activate([
             distanceLabel.topAnchor.constraint(equalTo: distanceTitleLabel.bottomAnchor, constant: 10),
