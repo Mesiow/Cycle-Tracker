@@ -19,6 +19,7 @@
 		C0C321352CB3281E00D377DA /* CurrentRideVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C321342CB3281E00D377DA /* CurrentRideVC.swift */; };
 		C0C321382CB4664500D377DA /* CTLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C321372CB4664500D377DA /* CTLabel.swift */; };
 		C0E6C64B2CB715FE00EF9B62 /* RideCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E6C64A2CB715FE00EF9B62 /* RideCell.swift */; };
+		C0F5F0552CBC38F400CD022E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F5F0542CBC38F400CD022E /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		C0C321342CB3281E00D377DA /* CurrentRideVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentRideVC.swift; sourceTree = "<group>"; };
 		C0C321372CB4664500D377DA /* CTLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CTLabel.swift; sourceTree = "<group>"; };
 		C0E6C64A2CB715FE00EF9B62 /* RideCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideCell.swift; sourceTree = "<group>"; };
+		C0F5F0542CBC38F400CD022E /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 			children = (
 				C0C321322CB18FDE00D377DA /* CTButton.swift */,
 				C0C321372CB4664500D377DA /* CTLabel.swift */,
+				C0F5F0542CBC38F400CD022E /* Utils.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -194,6 +197,7 @@
 				C0C321162CB05F0C00D377DA /* AppDelegate.swift in Sources */,
 				C0C3212D2CB05FDC00D377DA /* RidesViewController.swift in Sources */,
 				C0C321312CB18DF200D377DA /* SetRideGoalVC.swift in Sources */,
+				C0F5F0552CBC38F400CD022E /* Utils.swift in Sources */,
 				C0C321382CB4664500D377DA /* CTLabel.swift in Sources */,
 				C0C321352CB3281E00D377DA /* CurrentRideVC.swift in Sources */,
 				C0C321182CB05F0C00D377DA /* SceneDelegate.swift in Sources */,

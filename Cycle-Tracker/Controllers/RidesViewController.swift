@@ -6,9 +6,16 @@
 //
 
 import UIKit
+import CoreData
 
 class RidesViewController: UIViewController {
     
+    //core data context
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext;
+    
+    var firstLoad : Bool = true;
+    var rides: [Ride] = [];
+   
     var ridesTableView = UITableView();
     var titleLabelView = UILabel();
     var ridesImageView = UIImageView();
@@ -17,12 +24,29 @@ class RidesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground;
-
+        //Core data
+        if(firstLoad){
+            firstLoad = false;
+            fetchRideData();
+        }
+        
         ridesTableView.delegate = self;
         ridesTableView.dataSource = self;
+        ridesTableView.allowsSelection = false;
         
         configUI();
+    }
+    
+    private func fetchRideData(with request: NSFetchRequest<Ride> = Ride.fetchRequest()){
+        do {
+            rides = try context.fetch(request);
+            if(rides.count <= 0){
+                print("no rides available");
+            }
+        }catch{
+            print("Error loading rides from core data \(error)");
+        }
+        ridesTableView.reloadData();
     }
     
     @objc func startButtonPressed(){
@@ -31,7 +55,9 @@ class RidesViewController: UIViewController {
     }
     
     
-    func configUI(){
+    private func configUI(){
+        view.backgroundColor = .systemBackground;
+        
         //add subviews
         view.addSubview(ridesTableView); //necessary to see this view on screen
         view.addSubview(titleLabelView);
@@ -45,7 +71,7 @@ class RidesViewController: UIViewController {
         startButton.translatesAutoresizingMaskIntoConstraints = false;
         
         //configure table view
-        ridesTableView.register(UITableViewCell.self, forCellReuseIdentifier: Constants.ridesCellIdentifier); //register a default cell for use
+        ridesTableView.register(RideCell.self, forCellReuseIdentifier: Constants.ridesCellIdentifier); //register a default cell for use
         
         //Table view constraints
         NSLayoutConstraint.activate([
@@ -90,15 +116,16 @@ class RidesViewController: UIViewController {
 
 //Table View
 extension RidesViewController : UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100.0;
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 100;
+        return 15;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = ridesTableView.dequeueReusableCell(withIdentifier: Constants.ridesCellIdentifier, for: indexPath);
-        var config = cell.defaultContentConfiguration();
-        config.text = "Ride #\(indexPath.row)";
-        cell.contentConfiguration = config;
         
         return cell;
     }

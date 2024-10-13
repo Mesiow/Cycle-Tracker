@@ -8,7 +8,6 @@
 import UIKit
 
 class RideCell : UITableViewCell {
-    var title = CTLabel(color: .label, text: "Ride", font: .systemFont(ofSize: 25, weight: .semibold));
     var timeLabel = CTLabel(color: .label, text: "Time: ", font: .systemFont(ofSize: 15, weight: .medium));
     var distanceLabel = CTLabel(color: .label, text: "Distance: ", font: .systemFont(ofSize: 15, weight: .medium));
     var dateLabel = CTLabel(color: .label, text: "Date: ", font: .systemFont(ofSize: 15, weight: .medium));
@@ -20,7 +19,6 @@ class RideCell : UITableViewCell {
     }
     
     private func layoutUI(){
-        contentView.addSubview(title);
         contentView.addSubview(timeLabel);
         contentView.addSubview(distanceLabel);
         contentView.addSubview(dateLabel);
@@ -28,15 +26,9 @@ class RideCell : UITableViewCell {
         
         //Constraints
         
-        //Title
-        NSLayoutConstraint.activate([
-            title.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            title.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5)
-        ])
-        
         //Time
         NSLayoutConstraint.activate([
-            timeLabel.leadingAnchor.constraint(equalTo: title.trailingAnchor, constant: 20),
+            timeLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             timeLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20)
         ])
         

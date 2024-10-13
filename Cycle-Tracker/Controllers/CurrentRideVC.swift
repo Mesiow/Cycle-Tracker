@@ -11,7 +11,20 @@ import CoreLocation
 class CurrentRideVC: UIViewController {
 
     let locManager = CLLocationManager();
-    var distanceTraveled = 0.0;
+    var locationAuthorized : Bool = false;
+    
+    var startLocation : CLLocation!
+    var lastLocation : CLLocation!
+    
+    var timer : Timer!
+    var date : Date!
+    var distance: Double = 0.0;
+    var seconds: Int = 0;
+    var altitude: Double = 0;
+    var calories: Float = 0;
+    var speed: Float = 0.0;
+    
+    var paused : Bool = false;
     
     var infoView = UIView(); //view that holds all the tracking info
     var distBackgroundView = UIView();
@@ -47,6 +60,77 @@ class CurrentRideVC: UIViewController {
         configUILabels();
     }
     
+    func start(){
+        date = Date();
+        
+        //start updating location
+        locManager.startUpdatingLocation();
+        locManager.allowsBackgroundLocationUpdates = true;
+        
+        timerStart();
+    }
+    
+    func timerStart(){
+        //start timer
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(timerUpdate), userInfo: nil, repeats: true)
+    }
+    
+    @objc func timerUpdate() {
+        seconds += 1;
+        let time = secondsToHoursMinutesSeconds(seconds);
+        
+        //update time label
+        let h = String(format: "%02d", time.hours);
+        let m = String(format: "%02d", time.min);
+        let s = String(format: "%02d", time.sec);
+        timeLabel.text = "\(h):\(m):\(s)";
+    }
+    
+    @objc func stopButtonPressed(){
+        let alert = UIAlertController(title: "Stop Ride", message: "Are you sure you want to end your ride?", preferredStyle: .alert);
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Yes", comment: "Default action"), style: .default, handler: { _ in
+            //handle stopping the ride
+            //1. save current data of ride to core data
+            
+            
+            //2. return to root view controller and update our ride data from core data if there is any
+            self.view.window?.rootViewController?.dismiss(animated: true);
+        }))
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: {_ in
+            print("No selected");
+        }))
+        
+        self.present(alert, animated: true);
+    }
+    
+    @objc func pauseButtonPressed(){
+        paused.toggle();
+        if paused{
+            locManager.stopUpdatingLocation();
+            pauseButton.setTitle("Resume", for: .normal);
+            
+            timer.invalidate();
+        }else{
+            locManager.startUpdatingLocation();
+            pauseButton.setTitle("Pause", for: .normal);
+            
+            timerStart();
+        }
+    }
+    
+    func updateLabels(){
+        if !paused{
+            distanceLabel.text = "\(distance)";
+            altituteLabel.text = "\(altitude)";
+            speedLabel.text = "\(speed)";
+        }
+    }
+    
+    func secondsToHoursMinutesSeconds(_ seconds: Int) -> (hours: Int, min: Int, sec: Int) {
+        return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
+    }
+    
     func configUI(){
         view.addSubview(infoView);
         view.addSubview(distBackgroundView);
@@ -63,6 +147,9 @@ class CurrentRideVC: UIViewController {
         
         stopButton.disableTint();
         pauseButton.disableTint();
+        
+        stopButton.addTarget(self, action: #selector(stopButtonPressed), for: .touchUpInside);
+        pauseButton.addTarget(self, action: #selector(pauseButtonPressed), for: .touchUpInside);
         
         NSLayoutConstraint.activate([
             infoView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, constant: -20),
@@ -174,7 +261,30 @@ class CurrentRideVC: UIViewController {
 extension CurrentRideVC: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus){
         if status == .authorizedWhenInUse {
+            locationAuthorized = true;
+            start();
             print("Location Authorized")
         }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if startLocation == nil {
+            startLocation = locations.first;
+        }
+        else if let location = locations.last {
+            //update traveled distance from last update to current update
+            distance += lastLocation.distance(from: location);
+            distance = distance.convert(from: .meters, to: .miles);
+            
+            altitude = location.altitude.convert(from: .meters, to: .feet);
+            speed = (Float)((location.speed) * 2.23694) //convert from meters/sec to mph
+
+            updateLabels();
+        }
+        lastLocation = locations.last;
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+            print("error:\(error)")
     }
 }

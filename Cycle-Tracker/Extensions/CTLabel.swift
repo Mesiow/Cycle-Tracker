@@ -9,18 +9,6 @@ import UIKit
 
 
 class CTLabel : UILabel {
-    /*var hasUnderline : Bool {
-        set(value){
-            self.hasUnderline = value;
-            if value{
-                addUnderline();
-            }
-        }
-        get{
-            return self.hasUnderline;
-        }
-    }*/
-    
     override init(frame: CGRect) {
         super.init(frame: frame);
     }
