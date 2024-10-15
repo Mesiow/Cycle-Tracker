@@ -62,6 +62,14 @@ class CurrentRideVC: UIViewController {
         configUILabels();
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated);
+        
+        let rootVC = self.view.window?.rootViewController;
+        rootVC!.beginAppearanceTransition(true, animated: true); //safer function over calling viewWillAppear directly
+    }
+    
+    
     func start(){
         date = Date().formatted(date: .numeric, time: .omitted);
         
@@ -69,8 +77,6 @@ class CurrentRideVC: UIViewController {
         locManager.startUpdatingLocation();
         locManager.allowsBackgroundLocationUpdates = true;
         locManager.distanceFilter = 1;
-        
-        print(goal!)
         
         timerStart();
     }
@@ -139,13 +145,9 @@ class CurrentRideVC: UIViewController {
             }
         }
             
-        let time = secondsToHoursMinutesSeconds(seconds);
-            
         //update time label
-        let h = String(format: "%02d", time.hours);
-        let m = String(format: "%02d", time.min);
-        let s = String(format: "%02d", time.sec);
-        timeLabel.text = "\(h):\(m):\(s)";
+        let time = secondsToHoursMinutesSeconds(seconds);
+        timeLabel.text = createTimeLabel(hours: time.hours, min: time.min, sec: time.sec);
     }
     
     @objc func stopButtonPressed(){
@@ -187,9 +189,6 @@ class CurrentRideVC: UIViewController {
         }
     }
     
-    func secondsToHoursMinutesSeconds(_ seconds: Int32) -> (hours: Int32, min: Int32, sec: Int32) {
-        return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
-    }
     
     func configUI(){
         view.addSubview(infoView);

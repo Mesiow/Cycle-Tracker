@@ -24,8 +24,6 @@ class RidesViewController: UIViewController {
         if(firstLoad){
             firstLoad = false;
             fetchRideData();
-        }else{
-            reloadRideData(); //saves and fetches new data and reloads tableview
         }
 
         ridesTableView.delegate = self;
@@ -34,6 +32,22 @@ class RidesViewController: UIViewController {
         
         configUI();
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated);
+
+    }
+    
+    override func beginAppearanceTransition(_ isAppearing: Bool, animated: Bool) {
+        super.beginAppearanceTransition(isAppearing, animated: animated);
+        
+        if !firstLoad {
+            //refresh data and table
+            reloadRideData();
+            ridesTableView.reloadData();
+        }
+    }
+    
     
     @objc func startButtonPressed(){
         let goalVC = SetRideGoalVC();
@@ -107,11 +121,23 @@ extension RidesViewController : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 15;
+        return rides.count;
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = ridesTableView.dequeueReusableCell(withIdentifier: Constants.ridesCellIdentifier, for: indexPath);
+        let cell = ridesTableView.dequeueReusableCell(withIdentifier: Constants.ridesCellIdentifier, for: indexPath) as! RideCell;
+        
+        let ride = rides[indexPath.row];
+        
+        let time = secondsToHoursMinutesSeconds(ride.seconds);
+        let timeText = createTimeLabel(hours: time.hours, min: time.min, sec: time.sec);
+        cell.timeLabel.text = timeText
+        
+        let distFormat = String(format: "%.1f", ride.distance);
+        cell.distanceLabel.text = "\(distFormat) Miles";
+        
+        cell.dateLabel.text = ride.date;
+        cell.caloriesLabel.text = "\(ride.calories) Cals";
         
         return cell;
     }
