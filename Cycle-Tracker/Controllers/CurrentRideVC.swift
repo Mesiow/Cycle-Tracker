@@ -32,19 +32,19 @@ class CurrentRideVC: UIViewController {
     var distBackgroundView = UIView();
     
     var distanceTitleLabel = CTLabel(color: .white, text: "Distance", font: .systemFont(ofSize: 40, weight: .semibold));
-    var distanceLabel = CTLabel(color: .white, text: "0 Miles", font: .systemFont(ofSize: 25, weight: .medium));
+    var distanceLabel = CTLabel(color: .white, text: "0 Miles", font: .systemFont(ofSize: 30, weight: .medium));
     
     var timeTitleLabel = CTLabel(color: .white, text: "Time", font: .systemFont(ofSize: 30, weight: .semibold));
-    var timeLabel = CTLabel(color: .white, text: "0:00 Min", font: .systemFont(ofSize: 20, weight: .medium));
+    var timeLabel = CTLabel(color: .white, text: "0:00 Min", font: .systemFont(ofSize: 24, weight: .medium));
     
     var altitudeTitleLabel = CTLabel(color: .white, text: "Altitude", font: .systemFont(ofSize: 30, weight: .semibold));
-    var altituteLabel = CTLabel(color: .white, text: "0 ft", font: .systemFont(ofSize: 20, weight: .medium));
+    var altituteLabel = CTLabel(color: .white, text: "0 ft", font: .systemFont(ofSize: 24, weight: .medium));
     
     var caloriesTitleLabel = CTLabel(color: .white, text: "Calories", font: .systemFont(ofSize: 30, weight: .semibold));
-    var caloriesLabel = CTLabel(color: .white, text: "0 Cals", font: .systemFont(ofSize: 20, weight: .medium));
+    var caloriesLabel = CTLabel(color: .white, text: "0 Cals", font: .systemFont(ofSize: 24, weight: .medium));
     
     var speedTitleLabel = CTLabel(color: .white, text: "Speed", font: .systemFont(ofSize: 30, weight: .semibold));
-    var speedLabel = CTLabel(color: .white, text: "0 Mph", font: .systemFont(ofSize: 20, weight: .medium));
+    var speedLabel = CTLabel(color: .white, text: "0 Mph", font: .systemFont(ofSize: 24, weight: .medium));
     
     var stopButton = CTButton(color: .systemRed, title: "Stop");
     var pauseButton = CTButton(color: .systemYellow, title: "Pause");
