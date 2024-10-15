@@ -26,7 +26,7 @@ class SetRideGoalVC: UIViewController {
     var caloriesMenuButton = CTButtonMenu(color: .systemBlue, title: "Calories");
     var goalLabel = UILabel();
     
-    var goal : Goal!
+    var goal : Goal? = nil
     var distances = [
         3, 5, 10, 15
     ]
@@ -48,8 +48,19 @@ class SetRideGoalVC: UIViewController {
     }
     
     @objc func goButtonPressed(){
+        
+        //User must choose a goal before continuing
+        if goal == nil {
+            let alert = UIAlertController(title: "You must choose a goal before you continue", message: "Choose a goal", preferredStyle: .alert);
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Default action"), style: .default));
+            
+            self.present(alert, animated: true);
+                            
+            return;
+        }
+        
         let vc = CurrentRideVC();
-        vc.goal = self.goal;
+        vc.goal = self.goal!;
         vc.modalPresentationStyle = .fullScreen;
         
         present(vc, animated: true);
