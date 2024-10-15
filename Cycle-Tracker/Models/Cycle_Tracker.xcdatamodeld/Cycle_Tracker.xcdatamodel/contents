@@ -4,6 +4,6 @@
         <attribute name="calories" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="date" attributeType="String"/>
         <attribute name="distance" attributeType="Float" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <attribute name="time" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="seconds" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
 </model>

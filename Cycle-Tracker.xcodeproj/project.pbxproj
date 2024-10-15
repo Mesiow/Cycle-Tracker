@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C076B0672CBD66CD0045A045 /* CycleTrackerCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C076B0662CBD66CD0045A045 /* CycleTrackerCoreData.swift */; };
 		C0C321162CB05F0C00D377DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C321152CB05F0C00D377DA /* AppDelegate.swift */; };
 		C0C321182CB05F0C00D377DA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C321172CB05F0C00D377DA /* SceneDelegate.swift */; };
 		C0C321202CB05F0C00D377DA /* Cycle_Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C0C3211E2CB05F0C00D377DA /* Cycle_Tracker.xcdatamodeld */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C076B0662CBD66CD0045A045 /* CycleTrackerCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CycleTrackerCoreData.swift; sourceTree = "<group>"; };
 		C0C321122CB05F0C00D377DA /* Cycle-Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cycle-Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0C321152CB05F0C00D377DA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0C321172CB05F0C00D377DA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -80,7 +82,6 @@
 				C0C321212CB05F0E00D377DA /* Assets.xcassets */,
 				C0C321232CB05F0E00D377DA /* LaunchScreen.storyboard */,
 				C0C321262CB05F0E00D377DA /* Info.plist */,
-				C0C3211E2CB05F0C00D377DA /* Cycle_Tracker.xcdatamodeld */,
 			);
 			path = "Cycle-Tracker";
 			sourceTree = "<group>";
@@ -108,6 +109,8 @@
 		C0E6C6462CB70F1C00EF9B62 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				C0C3211E2CB05F0C00D377DA /* Cycle_Tracker.xcdatamodeld */,
+				C076B0662CBD66CD0045A045 /* CycleTrackerCoreData.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -194,6 +197,7 @@
 				C0E6C64B2CB715FE00EF9B62 /* RideCell.swift in Sources */,
 				C0C3212F2CB18C8900D377DA /* Constants.swift in Sources */,
 				C0C321202CB05F0C00D377DA /* Cycle_Tracker.xcdatamodeld in Sources */,
+				C076B0672CBD66CD0045A045 /* CycleTrackerCoreData.swift in Sources */,
 				C0C321162CB05F0C00D377DA /* AppDelegate.swift in Sources */,
 				C0C3212D2CB05FDC00D377DA /* RidesViewController.swift in Sources */,
 				C0C321312CB18DF200D377DA /* SetRideGoalVC.swift in Sources */,
@@ -342,11 +346,11 @@
 				DEVELOPMENT_TEAM = 822D8Y7G66;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Cycle-Tracker/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Allow location access";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -370,11 +374,11 @@
 				DEVELOPMENT_TEAM = 822D8Y7G66;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Cycle-Tracker/Info.plist";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Allow location access";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

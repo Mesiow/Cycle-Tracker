@@ -9,10 +9,6 @@ import UIKit
 import CoreData
 
 class RidesViewController: UIViewController {
-    
-    //core data context
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext;
-    
     var firstLoad : Bool = true;
     var rides: [Ride] = [];
    
@@ -24,29 +20,19 @@ class RidesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Core data
+        //Core data load
         if(firstLoad){
             firstLoad = false;
             fetchRideData();
+        }else{
+            reloadRideData(); //saves and fetches new data and reloads tableview
         }
-        
+
         ridesTableView.delegate = self;
         ridesTableView.dataSource = self;
         ridesTableView.allowsSelection = false;
         
         configUI();
-    }
-    
-    private func fetchRideData(with request: NSFetchRequest<Ride> = Ride.fetchRequest()){
-        do {
-            rides = try context.fetch(request);
-            if(rides.count <= 0){
-                print("no rides available");
-            }
-        }catch{
-            print("Error loading rides from core data \(error)");
-        }
-        ridesTableView.reloadData();
     }
     
     @objc func startButtonPressed(){

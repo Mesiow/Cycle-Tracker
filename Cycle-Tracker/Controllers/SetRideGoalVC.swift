@@ -7,6 +7,17 @@
 
 import UIKit
 
+
+struct Goal{
+    enum GoalType {
+        case distance
+        case time
+        case cals
+    }
+    var type: GoalType
+    var value: Int
+}
+
 class SetRideGoalVC: UIViewController {
 
     var goButton = CTButton(color: .systemGreen, title: "Go!");
@@ -15,11 +26,12 @@ class SetRideGoalVC: UIViewController {
     var caloriesMenuButton = CTButtonMenu(color: .systemBlue, title: "Calories");
     var goalLabel = UILabel();
     
+    var goal : Goal!
     var distances = [
         3, 5, 10, 15
     ]
     var times = [
-        10, 20, 30, 40
+        1, 20, 30, 40
     ]
     var cals = [
         100, 200, 300, 400
@@ -37,6 +49,7 @@ class SetRideGoalVC: UIViewController {
     
     @objc func goButtonPressed(){
         let vc = CurrentRideVC();
+        vc.goal = self.goal;
         vc.modalPresentationStyle = .fullScreen;
         
         present(vc, animated: true);
@@ -99,6 +112,9 @@ class SetRideGoalVC: UIViewController {
         for i in 0..<distances.count {
             distanceActions.insert(UIAction(title: "\(self.distances[i]) Miles", handler: { (action) in
                 self.distanceMenuButton.setText(title: "\(self.distances[i]) Miles")
+                self.clearButtonMenusExcept(button: self.distanceMenuButton);
+                
+                self.goal = Goal(type: Goal.GoalType.distance, value: self.distances[i]);
             }), at: i)
         }
         distanceMenuButton.menu = UIMenu(title: "Your Options...", children: distanceActions)
@@ -108,6 +124,9 @@ class SetRideGoalVC: UIViewController {
         for i in 0..<times.count {
             timeActions.insert(UIAction(title: "\(self.times[i]) Min", handler: { (action) in
                 self.timeMenuButton.setText(title: "\(self.times[i]) Min")
+                self.clearButtonMenusExcept(button: self.timeMenuButton);
+                
+                self.goal = Goal(type: Goal.GoalType.time, value: self.times[i]);
             }), at: i)
         }
         timeMenuButton.menu = UIMenu(title: "Your Options...", children: timeActions)
@@ -117,8 +136,23 @@ class SetRideGoalVC: UIViewController {
         for i in 0..<cals.count {
             calsActions.insert(UIAction(title: "\(self.cals[i]) Cals", handler: { (action) in
                 self.caloriesMenuButton.setText(title: "\(self.cals[i]) Cals")
+                self.clearButtonMenusExcept(button: self.caloriesMenuButton);
+                
+                self.goal = Goal(type: Goal.GoalType.cals, value: self.cals[i]);
             }), at: i)
         }
         caloriesMenuButton.menu = UIMenu(title: "Your Options", children: calsActions)
+    }
+    
+    func clearButtonMenusExcept(button: CTButtonMenu){
+        if distanceMenuButton != button {
+            distanceMenuButton.setText(title: "Distance");
+        }
+        if timeMenuButton != button {
+            timeMenuButton.setText(title: "Time");
+        }
+        if(caloriesMenuButton != button){
+            caloriesMenuButton.setText(title: "Calories");
+        }
     }
 }

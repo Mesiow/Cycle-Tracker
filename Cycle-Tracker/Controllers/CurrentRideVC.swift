@@ -16,12 +16,14 @@ class CurrentRideVC: UIViewController {
     var startLocation : CLLocation!
     var lastLocation : CLLocation!
     
+    var goal : Goal!
     var timer : Timer!
-    var date : Date!
+    var date : String!
+    
     var distance: Double = 0.0;
-    var seconds: Int = 0;
-    var altitude: Double = 0;
-    var calories: Float = 0;
+    var seconds: Int32 = 0;
+    var altitude: Float = 0;
+    var calories: Int32 = 0;
     var speed: Float = 0.0;
     
     var paused : Bool = false;
@@ -61,13 +63,65 @@ class CurrentRideVC: UIViewController {
     }
     
     func start(){
-        date = Date();
+        date = Date().formatted(date: .numeric, time: .omitted);
         
         //start updating location
         locManager.startUpdatingLocation();
         locManager.allowsBackgroundLocationUpdates = true;
+        locManager.distanceFilter = 1;
+        
+        print(goal!)
         
         timerStart();
+    }
+    
+    func stop(){
+        paused = true;
+        timer.invalidate();
+        locManager.stopUpdatingLocation();
+    }
+    
+    func update(){
+        //update labels
+        updateLabels();
+        
+        //check if goal reached
+        if goal.type == .distance{
+            if (self.distance >= (Double(goal.value))) {
+                presentGoalCompletedAlert();
+            }
+        }else if goal.type == .cals{
+            if(self.calories >= goal.value){
+                presentGoalCompletedAlert();
+            }
+        }
+        
+    }
+    
+    private func presentGoalCompletedAlert(){
+        stop();
+        
+        let alert = UIAlertController(title: "Goal Reached!", message: "Save Ride?", preferredStyle: .alert);
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Save", comment: "Default action"), style: .default, handler: { _ in
+            //1. create current ride data
+            let newRide = Ride(context: CoreDataContext.context);
+            newRide.date = self.date;
+            newRide.distance = Float(self.distance);
+            newRide.seconds = self.seconds;
+            newRide.calories = self.calories;
+            
+            //2. append new ride to our rides array in the root view controller then return to it
+            if let rootVC = self.view.window?.rootViewController as? RidesViewController {
+                rootVC.rides.append(newRide);
+                rootVC.dismiss(animated: true);
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Exit", comment: "Default action"), style: .default, handler: {_ in
+            self.view.window?.rootViewController?.dismiss(animated: true);
+        }))
+        
+        self.present(alert, animated: true);
     }
     
     func timerStart(){
@@ -77,8 +131,16 @@ class CurrentRideVC: UIViewController {
     
     @objc func timerUpdate() {
         seconds += 1;
-        let time = secondsToHoursMinutesSeconds(seconds);
         
+        //Check if time goal reached
+        if goal.type == .time{
+            if(((self.seconds % 3600) / 60) >= goal.value){
+                presentGoalCompletedAlert();
+            }
+        }
+            
+        let time = secondsToHoursMinutesSeconds(seconds);
+            
         //update time label
         let h = String(format: "%02d", time.hours);
         let m = String(format: "%02d", time.min);
@@ -90,10 +152,8 @@ class CurrentRideVC: UIViewController {
         let alert = UIAlertController(title: "Stop Ride", message: "Are you sure you want to end your ride?", preferredStyle: .alert);
         alert.addAction(UIAlertAction(title: NSLocalizedString("Yes", comment: "Default action"), style: .default, handler: { _ in
             //handle stopping the ride
-            //1. save current data of ride to core data
             
-            
-            //2. return to root view controller and update our ride data from core data if there is any
+            //1. return to root view controller and update our ride data from core data if there is any
             self.view.window?.rootViewController?.dismiss(animated: true);
         }))
         
@@ -121,13 +181,13 @@ class CurrentRideVC: UIViewController {
     
     func updateLabels(){
         if !paused{
-            distanceLabel.text = "\(distance)";
-            altituteLabel.text = "\(altitude)";
-            speedLabel.text = "\(speed)";
+            distanceLabel.text = String(format: "%.4f", distance);
+            altituteLabel.text = String(format: "%.1f", altitude);
+            speedLabel.text = String(format: "%.1f", speed);
         }
     }
     
-    func secondsToHoursMinutesSeconds(_ seconds: Int) -> (hours: Int, min: Int, sec: Int) {
+    func secondsToHoursMinutesSeconds(_ seconds: Int32) -> (hours: Int32, min: Int32, sec: Int32) {
         return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
     }
     
@@ -271,17 +331,19 @@ extension CurrentRideVC: CLLocationManagerDelegate {
         if startLocation == nil {
             startLocation = locations.first;
         }
-        else if let location = locations.last {
-            //update traveled distance from last update to current update
-            distance += lastLocation.distance(from: location);
-            distance = distance.convert(from: .meters, to: .miles);
+        else {
+            let lastLocation = locations.last!;
+            let dist = startLocation.distance(from: lastLocation);
+            startLocation = lastLocation;
             
-            altitude = location.altitude.convert(from: .meters, to: .feet);
-            speed = (Float)((location.speed) * 2.23694) //convert from meters/sec to mph
+            //update traveled distance from last update to current update
+            distance += dist.convert(from: .meters, to: .miles);
+            
+            altitude = (Float)(lastLocation.altitude.convert(from: .meters, to: .feet));
+            speed = (Float)((lastLocation.speed) * 2.23694) //convert from meters/sec to mph
 
-            updateLabels();
+            update();
         }
-        lastLocation = locations.last;
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
