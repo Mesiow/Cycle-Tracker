@@ -9,6 +9,8 @@ import UIKit
 import CoreData
 
 class RidesViewController: UIViewController {
+    let defaults = UserDefaults.standard;
+    
     var firstLoad : Bool = true;
     var rides: [Ride] = [];
    
@@ -50,8 +52,41 @@ class RidesViewController: UIViewController {
     
     
     @objc func startButtonPressed(){
+        //check user defaults if there is already weight data stored
+        let weight = defaults.object(forKey: "Weight");
+        if weight == nil{
+            //ask user for weight (to be able to calculate calories burned
+            presentWeightAlert();
+        }else{
+            //weight already saved so continue
+            presentNextView();
+        }
+    }
+    
+    func presentNextView(){
         let goalVC = SetRideGoalVC();
         present(goalVC, animated: true);
+    }
+    
+    func presentWeightAlert(){
+        let alert = UIAlertController(title: "Please enter your weight", message: "Weight", preferredStyle: .alert);
+        
+        alert.addTextField(configurationHandler: { textField in
+            textField.keyboardType = .numberPad;
+        })
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Default action"), style: .default, handler: { _ in
+            let weight = Float(alert.textFields![0].text!);
+            
+            //save weight to user defaults
+            self.defaults.set(weight, forKey: "Weight");
+            
+            //continue and present the next view
+            self.presentNextView();
+        }));
+        
+       
+        self.present(alert, animated: true);
     }
     
     
