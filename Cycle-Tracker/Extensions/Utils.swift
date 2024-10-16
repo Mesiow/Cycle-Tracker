@@ -6,4 +6,17 @@ extension Double {
   }
 }
 
+func secondsToHoursMinutesSeconds(_ seconds: Int32) -> (hours: Int32, min: Int32, sec: Int32) {
+    return (seconds / 3600, (seconds % 3600) / 60, (seconds % 3600) % 60)
+}
+
+func createTimeLabel(hours: Int32, min: Int32, sec: Int32) -> String {
+    let h = String(format: "%02d", hours);
+    let m = String(format: "%02d", min);
+    let s = String(format: "%02d", sec);
+    
+    let text = "\(h):\(m):\(s)";
+    
+    return text;
+}
 
