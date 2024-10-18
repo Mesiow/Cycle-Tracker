@@ -69,7 +69,7 @@ class RidesViewController: UIViewController {
     }
     
     func presentWeightAlert(){
-        let alert = UIAlertController(title: "Please enter your weight", message: "Weight", preferredStyle: .alert);
+        let alert = UIAlertController(title: "Please enter your weight", message: "Weight in lbs", preferredStyle: .alert);
         
         alert.addTextField(configurationHandler: { textField in
             textField.keyboardType = .numberPad;
@@ -129,7 +129,7 @@ class RidesViewController: UIViewController {
         
         //Configure constraints for simple system image
         ridesImageView.image = UIImage(systemName: "bicycle");
-        ridesImageView.tintColor = .systemGreen;
+        ridesImageView.tintColor = .systemBlue;
         NSLayoutConstraint.activate([
             ridesImageView.widthAnchor.constraint(equalToConstant: 30),
             ridesImageView.heightAnchor.constraint(equalToConstant: 22),
