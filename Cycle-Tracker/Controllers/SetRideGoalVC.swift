@@ -31,7 +31,7 @@ class SetRideGoalVC: UIViewController {
         3, 5, 10, 15
     ]
     var times = [
-        1, 20, 30, 40
+        10, 20, 30, 40
     ]
     var cals = [
         100, 200, 300, 400

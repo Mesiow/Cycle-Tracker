@@ -31,7 +31,6 @@ extension RidesViewController {
         }catch{
             print("Error loading rides from core data \(error)");
         }
-        ridesTableView.reloadData();
     }
     
     func reloadRideData(){
