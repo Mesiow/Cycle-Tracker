@@ -19,8 +19,10 @@ class CurrentRideVC: UIViewController {
     let defaults = UserDefaults.standard;
     var weight : Float!
     
-    let MET = 6.0; //typical Metabolic equivalent task of cycling
+    var baseMET = 6.0; //typical Metabolic equivalent task of cycling
+    var currMET = 6.0;
     //(var used in calculating calories roughly burned)
+    var baseCalsPerSec: Float!
     var calsPerSec : Float!
     
     var goal : Goal!
@@ -71,9 +73,11 @@ class CurrentRideVC: UIViewController {
         weight = defaults.float(forKey: "Weight"); //value must exist if we are able to start a ride
         weight *= 0.453; //convert to kg for formula
         
-        //formula to determine roughly how many calories user burns per second cycling
-        let met = Float(MET * 3.5);
-        calsPerSec = (((met * weight) / 200) / 60); //multiply by average speed to adjust calories burned
+        //base formula to determine roughly how many calories user burns per second cycling
+        //on update we will update MET based on the speed we are going to determine if we are burning more calories
+        let met = Float(baseMET * 3.5);
+        calsPerSec = (((met * weight) / 200) / 60);
+        baseCalsPerSec = calsPerSec;
         
         configUI();
         configUILabels();
@@ -135,7 +139,7 @@ class CurrentRideVC: UIViewController {
             
             //2. append new ride to our rides array in the root view controller then return to it
             if let rootVC = self.view.window?.rootViewController as? RidesViewController {
-                rootVC.rides.append(newRide); //append new ride to front of array becuase new entry should be displayed on top!!!!
+                rootVC.rides.insert(newRide, at: 0); //append new ride to front of array becuase new entries should be displayed on top!!!!
                 rootVC.dismiss(animated: true);
             }
         }))
@@ -155,7 +159,7 @@ class CurrentRideVC: UIViewController {
     @objc func timerUpdate() {
         seconds += 1;
         
-        calories += calsPerSec;
+        calculateCalories();
         
         //Check if time goal reached
         if goal.type == .time{
@@ -167,6 +171,16 @@ class CurrentRideVC: UIViewController {
         //update time label
         let time = secondsToHoursMinutesSeconds(seconds);
         timeLabel.text = createTimeLabel(hours: time.hours, min: time.min, sec: time.sec);
+    }
+    
+    func calculateCalories(){
+                          //0.2975
+        var newMET = speed * baseCalsPerSec; //13 * 0.2975 = 3.86
+        currMET = baseMET * Double(newMET); //6.0 * 3.86 = 23.16
+        
+        calsPerSec = (((Float(currMET) * weight) / 200) / 60); //now = 0.328 calories burned per sec (0.1 more than before) (the faster we go the more calories we will burn)
+        
+        calories += calsPerSec;
     }
     
     @objc func stopButtonPressed(){
