@@ -8,13 +8,17 @@
 import UIKit
 
 class RideCell : UITableViewCell {
-    var timeLabel = CTLabel(color: .label, text: "Time: ", font: .systemFont(ofSize: 15, weight: .medium));
-    var distanceLabel = CTLabel(color: .label, text: "Distance: ", font: .systemFont(ofSize: 15, weight: .medium));
-    var dateLabel = CTLabel(color: .label, text: "Date: ", font: .systemFont(ofSize: 15, weight: .medium));
-    var caloriesLabel = CTLabel(color: .label, text: "Calories: ", font: .systemFont(ofSize: 15, weight: .medium));
+    var timeLabel = CTLabel(color: .label, text: "", font: .systemFont(ofSize: 15, weight: .semibold));
+    var distanceLabel = CTLabel(color: .label, text: "", font: .systemFont(ofSize: 15, weight: .semibold));
+    var dateLabel = CTLabel(color: .label, text: "", font: .systemFont(ofSize: 20, weight: .bold));
+    var caloriesLabel = CTLabel(color: .label, text: "", font: .systemFont(ofSize: 15, weight: .semibold));
+    var mapImage = UIImageView();
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier);
+        
+        accessoryType = .disclosureIndicator;
+        
         layoutUI();
     }
     
@@ -23,8 +27,20 @@ class RideCell : UITableViewCell {
         contentView.addSubview(distanceLabel);
         contentView.addSubview(dateLabel);
         contentView.addSubview(caloriesLabel);
+        contentView.addSubview(mapImage);
+        
+        mapImage.image = UIImage(systemName: "map.fill");
+        mapImage.frame = CGRect(x: 0, y: 0, width: 30, height: 25);
+        mapImage.translatesAutoresizingMaskIntoConstraints = false;
+        
         
         //Constraints
+        
+        //Map
+        NSLayoutConstraint.activate([
+            mapImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            mapImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5)
+        ])
         
         //Time
         NSLayoutConstraint.activate([
@@ -34,7 +50,7 @@ class RideCell : UITableViewCell {
         
         //Distance
         NSLayoutConstraint.activate([
-            distanceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -50),
+            distanceLabel.trailingAnchor.constraint(equalTo: mapImage.trailingAnchor, constant: -100),
             distanceLabel.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor)
         ])
         
@@ -49,7 +65,6 @@ class RideCell : UITableViewCell {
             caloriesLabel.leadingAnchor.constraint(equalTo: timeLabel.leadingAnchor),
             caloriesLabel.bottomAnchor.constraint(equalTo: timeLabel.topAnchor, constant: -10)
         ])
-        
     }
     
     required init?(coder: NSCoder) {
