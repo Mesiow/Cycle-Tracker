@@ -9,12 +9,19 @@ import UIKit
 import CoreLocation
 
 class CurrentRideVC: UIViewController {
-
+    
     let locManager = CLLocationManager();
     var locationAuthorized : Bool = false;
     
     var startLocation : CLLocation!
     var lastLocation : CLLocation!
+    
+    let defaults = UserDefaults.standard;
+    var weight : Float!
+    
+    let MET = 6.0; //typical Metabolic equivalent task of cycling
+    //(var used in calculating calories roughly burned)
+    var calsPerSec : Float!
     
     var goal : Goal!
     var timer : Timer!
@@ -23,7 +30,7 @@ class CurrentRideVC: UIViewController {
     var distance: Double = 0.0;
     var seconds: Int32 = 0;
     var altitude: Float = 0;
-    var calories: Int32 = 0;
+    var calories: Float = 0;
     var speed: Float = 0.0;
     
     var paused : Bool = false;
@@ -32,19 +39,22 @@ class CurrentRideVC: UIViewController {
     var distBackgroundView = UIView();
     
     var distanceTitleLabel = CTLabel(color: .white, text: "Distance", font: .systemFont(ofSize: 40, weight: .semibold));
-    var distanceLabel = CTLabel(color: .white, text: "0 Miles", font: .systemFont(ofSize: 30, weight: .medium));
+    var distanceLabel = CTLabel(color: .white, text: "0.000", font: .systemFont(ofSize: 30, weight: .medium));
+    var distUnitLabel = CTLabel(color: .white, text: "Miles", font: .systemFont(ofSize: 30, weight: .medium));
     
     var timeTitleLabel = CTLabel(color: .white, text: "Time", font: .systemFont(ofSize: 30, weight: .semibold));
-    var timeLabel = CTLabel(color: .white, text: "0:00 Min", font: .systemFont(ofSize: 24, weight: .medium));
+    var timeLabel = CTLabel(color: .white, text: "0:00", font: .systemFont(ofSize: 24, weight: .medium));
     
     var altitudeTitleLabel = CTLabel(color: .white, text: "Altitude", font: .systemFont(ofSize: 30, weight: .semibold));
-    var altituteLabel = CTLabel(color: .white, text: "0 ft", font: .systemFont(ofSize: 24, weight: .medium));
+    var altituteLabel = CTLabel(color: .white, text: "0.0", font: .systemFont(ofSize: 24, weight: .medium));
+    var altitudeUnitLabel = CTLabel(color: .white, text: "ft", font: .systemFont(ofSize: 24, weight: .medium));
     
     var caloriesTitleLabel = CTLabel(color: .white, text: "Calories", font: .systemFont(ofSize: 30, weight: .semibold));
     var caloriesLabel = CTLabel(color: .white, text: "0 Cals", font: .systemFont(ofSize: 24, weight: .medium));
     
     var speedTitleLabel = CTLabel(color: .white, text: "Speed", font: .systemFont(ofSize: 30, weight: .semibold));
-    var speedLabel = CTLabel(color: .white, text: "0 Mph", font: .systemFont(ofSize: 24, weight: .medium));
+    var speedLabel = CTLabel(color: .white, text: "0.0", font: .systemFont(ofSize: 24, weight: .medium));
+    var speedUnitLabel = CTLabel(color: .white, text: "Mph", font: .systemFont(ofSize: 24, weight: .medium));
     
     var stopButton = CTButton(color: .systemRed, title: "Stop");
     var pauseButton = CTButton(color: .systemYellow, title: "Pause");
@@ -57,6 +67,13 @@ class CurrentRideVC: UIViewController {
         //request user permission to use location services while the app is in use
         locManager.requestWhenInUseAuthorization();
         locManager.delegate = self;
+        
+        weight = defaults.float(forKey: "Weight"); //value must exist if we are able to start a ride
+        weight *= 0.453; //convert to kg for formula
+        
+        //formula to determine roughly how many calories user burns per second cycling
+        let met = Float(MET * 3.5);
+        calsPerSec = (((met * weight) / 200) / 60); //multiply by average speed to adjust calories burned
         
         configUI();
         configUILabels();
@@ -97,7 +114,7 @@ class CurrentRideVC: UIViewController {
                 presentGoalCompletedAlert();
             }
         }else if goal.type == .cals{
-            if(self.calories >= goal.value){
+            if(Int32(self.calories) >= goal.value){
                 presentGoalCompletedAlert();
             }
         }
@@ -114,11 +131,11 @@ class CurrentRideVC: UIViewController {
             newRide.date = self.date;
             newRide.distance = Float(self.distance);
             newRide.seconds = self.seconds;
-            newRide.calories = self.calories;
+            newRide.calories = Int32(self.calories);
             
             //2. append new ride to our rides array in the root view controller then return to it
             if let rootVC = self.view.window?.rootViewController as? RidesViewController {
-                rootVC.rides.append(newRide);
+                rootVC.rides.append(newRide); //append new ride to front of array becuase new entry should be displayed on top!!!!
                 rootVC.dismiss(animated: true);
             }
         }))
@@ -137,6 +154,8 @@ class CurrentRideVC: UIViewController {
     
     @objc func timerUpdate() {
         seconds += 1;
+        
+        calories += calsPerSec;
         
         //Check if time goal reached
         if goal.type == .time{
@@ -183,9 +202,10 @@ class CurrentRideVC: UIViewController {
     
     func updateLabels(){
         if !paused{
-            distanceLabel.text = String(format: "%.4f", distance);
+            distanceLabel.text = String(format: "%.3f", distance);
             altituteLabel.text = String(format: "%.1f", altitude);
             speedLabel.text = String(format: "%.1f", speed);
+            caloriesLabel.text = String(format: "%.1f", calories);
         }
     }
     
@@ -242,6 +262,7 @@ class CurrentRideVC: UIViewController {
     func configUILabels(){
         distBackgroundView.addSubview(distanceTitleLabel);
         distBackgroundView.addSubview(distanceLabel);
+        distBackgroundView.addSubview(distUnitLabel);
        
         //These labels will be inside the info view
         infoView.addSubview(timeTitleLabel);
@@ -250,10 +271,12 @@ class CurrentRideVC: UIViewController {
         infoView.addSubview(timeLabel);
         infoView.addSubview(altitudeTitleLabel);
         infoView.addSubview(altituteLabel);
+        infoView.addSubview(altitudeUnitLabel);
         infoView.addSubview(caloriesTitleLabel);
         infoView.addSubview(caloriesLabel);
         infoView.addSubview(speedTitleLabel);
         infoView.addSubview(speedLabel);
+        infoView.addSubview(speedUnitLabel);
         
         //Distance labels
         distanceTitleLabel.addUnderline();
@@ -262,10 +285,17 @@ class CurrentRideVC: UIViewController {
             distanceTitleLabel.centerYAnchor.constraint(equalTo: distBackgroundView.centerYAnchor, constant: -10),
             distanceTitleLabel.centerXAnchor.constraint(equalTo: distBackgroundView.centerXAnchor)
         ])
+        
         NSLayoutConstraint.activate([
-            distanceLabel.topAnchor.constraint(equalTo: distanceTitleLabel.bottomAnchor, constant: 10),
-            distanceLabel.centerXAnchor.constraint(equalTo: distanceTitleLabel.centerXAnchor)
+            distUnitLabel.topAnchor.constraint(equalTo: distanceTitleLabel.bottomAnchor, constant: 10),
+            distUnitLabel.trailingAnchor.constraint(equalTo: distanceTitleLabel.trailingAnchor)
         ])
+        
+        NSLayoutConstraint.activate([
+            distanceLabel.centerYAnchor.constraint(equalTo: distUnitLabel.centerYAnchor),
+            distanceLabel.leadingAnchor.constraint(equalTo: distanceTitleLabel.leadingAnchor)
+        ])
+       
         
         //Time labels
         timeTitleLabel.addUnderline();
@@ -287,8 +317,13 @@ class CurrentRideVC: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            altituteLabel.topAnchor.constraint(equalTo: altitudeTitleLabel.bottomAnchor, constant: 10),
-            altituteLabel.centerXAnchor.constraint(equalTo: altitudeTitleLabel.centerXAnchor)
+            altitudeUnitLabel.topAnchor.constraint(equalTo: altitudeTitleLabel.bottomAnchor, constant: 10),
+            altitudeUnitLabel.trailingAnchor.constraint(equalTo: altitudeTitleLabel.trailingAnchor, constant: -25)
+        ])
+        
+        NSLayoutConstraint.activate([
+            altituteLabel.centerYAnchor.constraint(equalTo: altitudeUnitLabel.centerYAnchor),
+            altituteLabel.leadingAnchor.constraint(equalTo: altitudeTitleLabel.leadingAnchor, constant: 25)
         ])
         
         //Calories labels
@@ -311,8 +346,13 @@ class CurrentRideVC: UIViewController {
         ])
         
         NSLayoutConstraint.activate([
-            speedLabel.topAnchor.constraint(equalTo: speedTitleLabel.bottomAnchor, constant: 10),
-            speedLabel.centerXAnchor.constraint(equalTo: speedTitleLabel.centerXAnchor)
+            speedUnitLabel.topAnchor.constraint(equalTo: speedTitleLabel.bottomAnchor, constant: 10),
+            speedUnitLabel.trailingAnchor.constraint(equalTo: speedTitleLabel.trailingAnchor, constant: 5)
+        ])
+        
+        NSLayoutConstraint.activate([
+            speedLabel.centerYAnchor.constraint(equalTo: speedUnitLabel.centerYAnchor),
+            speedLabel.leadingAnchor.constraint(equalTo: speedTitleLabel.leadingAnchor, constant: -5)
         ])
     }
 }
