@@ -178,13 +178,13 @@ class CurrentRideVC: UIViewController {
             currMET = 4.0;
         }
         else if speed > 10.0 && speed <= 12.0 {
-            currMET = 8.0;
+            currMET = 6.0;
         }
         else if speed > 12.0 && speed <= 14.0 {
-            currMET = 10.0;
+            currMET = 8.0;
         }
         else if speed > 14.0 && speed <= 16.0 {
-            currMET = 12.0;
+            currMET = 10.0;
         }
         
         let updatedMET = Float(currMET * restingMET);
