@@ -19,10 +19,10 @@ class CurrentRideVC: UIViewController {
     let defaults = UserDefaults.standard;
     var weight : Float!
     
-    var baseMET = 6.0; //typical Metabolic equivalent task of cycling
-    var currMET = 6.0;
+    var baseMET = 8.0; //typical Metabolic equivalent task of cycling (10 - 12mph)
+    var currMET = 8.0;
+    var restingMET = 3.5;
     //(var used in calculating calories roughly burned)
-    var baseCalsPerSec: Float!
     var calsPerSec : Float!
     
     var goal : Goal!
@@ -75,9 +75,8 @@ class CurrentRideVC: UIViewController {
         
         //base formula to determine roughly how many calories user burns per second cycling
         //on update we will update MET based on the speed we are going to determine if we are burning more calories
-        let met = Float(baseMET * 3.5);
+        let met = Float(baseMET * restingMET);
         calsPerSec = (((met * weight) / 200) / 60);
-        baseCalsPerSec = calsPerSec;
         
         configUI();
         configUILabels();
@@ -174,11 +173,23 @@ class CurrentRideVC: UIViewController {
     }
     
     func calculateCalories(){
-        let newMET = speed * baseCalsPerSec; //13 * 0.2975 = 3.86
-        currMET = baseMET * Double(newMET); //6.0 * 3.86 = 23.16
+        //Update MET based on speed
+        if speed < 10 {
+            currMET = 4.0;
+        }
+        else if speed > 10.0 && speed <= 12.0 {
+            currMET = 8.0;
+        }
+        else if speed > 12.0 && speed <= 14.0 {
+            currMET = 10.0;
+        }
+        else if speed > 14.0 && speed <= 16.0 {
+            currMET = 12.0;
+        }
         
-        calsPerSec = (((Float(currMET) * weight) / 200) / 60); //now = 0.328 calories burned per sec (0.1 more than before) (the faster we go the more calories we will burn)
+        let updatedMET = Float(currMET * restingMET);
         
+        calsPerSec = (((Float(updatedMET) * weight) / 200) / 60);
         calories += calsPerSec;
     }
     
