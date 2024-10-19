@@ -28,13 +28,13 @@ class SetRideGoalVC: UIViewController {
     
     var goal : Goal? = nil
     var distances = [
-        3, 5, 10, 15
+        3, 5, 10, 15, 20
     ]
     var times = [
-        10, 20, 30, 40
+        10, 20, 30, 45, 60
     ]
     var cals = [
-        100, 200, 300, 400
+        100, 200, 300, 400, 500
     ]
     
     override func viewDidLoad() {
