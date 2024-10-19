@@ -48,7 +48,7 @@ class CurrentRideVC: UIViewController {
     var timeLabel = CTLabel(color: .white, text: "0:00", font: .systemFont(ofSize: 24, weight: .medium));
     
     var altitudeTitleLabel = CTLabel(color: .white, text: "Altitude", font: .systemFont(ofSize: 30, weight: .semibold));
-    var altituteLabel = CTLabel(color: .white, text: "0.0", font: .systemFont(ofSize: 24, weight: .medium));
+    var altituteLabel = CTLabel(color: .white, text: "0.00", font: .systemFont(ofSize: 24, weight: .medium));
     var altitudeUnitLabel = CTLabel(color: .white, text: "ft", font: .systemFont(ofSize: 24, weight: .medium));
     
     var caloriesTitleLabel = CTLabel(color: .white, text: "Calories", font: .systemFont(ofSize: 30, weight: .semibold));
@@ -139,7 +139,7 @@ class CurrentRideVC: UIViewController {
             
             //2. append new ride to our rides array in the root view controller then return to it
             if let rootVC = self.view.window?.rootViewController as? RidesViewController {
-                rootVC.rides.insert(newRide, at: 0); //append new ride to front of array becuase new entries should be displayed on top!!!!
+                rootVC.rides.append(newRide);
                 rootVC.dismiss(animated: true);
             }
         }))
@@ -174,8 +174,7 @@ class CurrentRideVC: UIViewController {
     }
     
     func calculateCalories(){
-                          //0.2975
-        var newMET = speed * baseCalsPerSec; //13 * 0.2975 = 3.86
+        let newMET = speed * baseCalsPerSec; //13 * 0.2975 = 3.86
         currMET = baseMET * Double(newMET); //6.0 * 3.86 = 23.16
         
         calsPerSec = (((Float(currMET) * weight) / 200) / 60); //now = 0.328 calories burned per sec (0.1 more than before) (the faster we go the more calories we will burn)
@@ -337,7 +336,7 @@ class CurrentRideVC: UIViewController {
         
         NSLayoutConstraint.activate([
             altituteLabel.centerYAnchor.constraint(equalTo: altitudeUnitLabel.centerYAnchor),
-            altituteLabel.leadingAnchor.constraint(equalTo: altitudeTitleLabel.leadingAnchor, constant: 25)
+            altituteLabel.trailingAnchor.constraint(equalTo: altitudeUnitLabel.leadingAnchor, constant: -5)
         ])
         
         //Calories labels
@@ -366,7 +365,7 @@ class CurrentRideVC: UIViewController {
         
         NSLayoutConstraint.activate([
             speedLabel.centerYAnchor.constraint(equalTo: speedUnitLabel.centerYAnchor),
-            speedLabel.leadingAnchor.constraint(equalTo: speedTitleLabel.leadingAnchor, constant: -5)
+            speedLabel.trailingAnchor.constraint(equalTo: speedUnitLabel.leadingAnchor, constant: -5)
         ])
     }
 }
