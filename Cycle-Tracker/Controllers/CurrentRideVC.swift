@@ -185,15 +185,11 @@ class CurrentRideVC: UIViewController {
     @objc func stopButtonPressed(){
         let alert = UIAlertController(title: "Stop Ride", message: "Are you sure you want to end your ride?", preferredStyle: .alert);
         alert.addAction(UIAlertAction(title: NSLocalizedString("Yes", comment: "Default action"), style: .default, handler: { _ in
-            //handle stopping the ride
-            
-            //1. return to root view controller and update our ride data from core data if there is any
+            //return to root view controller and update our ride data from core data if there is any
             self.view.window?.rootViewController?.dismiss(animated: true);
         }))
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default, handler: {_ in
-            print("No selected");
-        }))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "Default action"), style: .default));
         
         self.present(alert, animated: true);
     }
@@ -375,7 +371,6 @@ extension CurrentRideVC: CLLocationManagerDelegate {
         if status == .authorizedWhenInUse {
             locationAuthorized = true;
             start();
-            print("Location Authorized")
         }
     }
     
