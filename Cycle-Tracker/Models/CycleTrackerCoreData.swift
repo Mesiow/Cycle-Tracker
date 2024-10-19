@@ -23,6 +23,11 @@ extension RidesViewController {
     }
     
     func fetchRideData(with request: NSFetchRequest<Ride> = Ride.fetchRequest()){
+        //sort data by date (newest entry at the top)
+        let dateSortDescriptor = NSSortDescriptor(key: "date", ascending: false);
+        let sortDescriptors = [dateSortDescriptor];
+        request.sortDescriptors = sortDescriptors; //set the sort descriptor in our request
+        
         do {
             rides = try CoreDataContext.context.fetch(request);
             if(rides.count <= 0){
