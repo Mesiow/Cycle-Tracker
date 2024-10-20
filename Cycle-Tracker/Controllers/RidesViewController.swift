@@ -13,14 +13,20 @@ class RidesViewController: UIViewController {
     
     var firstLoad : Bool = true;
     var rides: [Ride] = [];
+    var noDataViewEnabled : Bool = true;
    
     var ridesTableView = UITableView();
     var titleLabelView = UILabel();
     var ridesImageView = UIImageView();
+    var noDataView = UIView();
+    var noDataLabelView = CTLabel(color: .white, text: "No Rides Yet", font: .systemFont(ofSize: 40, weight: .regular));
+    var noDataImageView = UIImageView();
     var startButton = CTButton(color: .systemGreen, title: "Start New Ride");
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        configUI();
         
         //Core data load
         if(firstLoad){
@@ -31,8 +37,6 @@ class RidesViewController: UIViewController {
         ridesTableView.delegate = self;
         ridesTableView.dataSource = self;
         ridesTableView.allowsSelection = false;
-        
-        configUI();
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,6 +93,50 @@ class RidesViewController: UIViewController {
         self.present(alert, animated: true);
     }
     
+    func presentNoDataView(){
+        noDataViewEnabled = true;
+        
+        view.addSubview(noDataView);
+        noDataView.addSubview(noDataImageView);
+        noDataView.addSubview(noDataLabelView);
+        
+        noDataView.translatesAutoresizingMaskIntoConstraints = false;
+        noDataImageView.translatesAutoresizingMaskIntoConstraints = false;
+        noDataLabelView.translatesAutoresizingMaskIntoConstraints = false;
+        
+        noDataView.backgroundColor = UIColor(named: "BlueAdaptive");
+        noDataView.layer.cornerRadius = 10;
+        
+        NSLayoutConstraint.activate([
+            noDataView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            noDataView.heightAnchor.constraint(equalTo: ridesTableView.heightAnchor),
+            noDataView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            noDataView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        
+        noDataImageView.image = UIImage(systemName: "widget.extralarge");
+        noDataImageView.tintColor = .white;
+        NSLayoutConstraint.activate([
+            noDataImageView.widthAnchor.constraint(equalToConstant: 120),
+            noDataImageView.heightAnchor.constraint(equalToConstant: 80),
+            noDataImageView.centerXAnchor.constraint(equalTo: noDataView.centerXAnchor),
+            noDataImageView.centerYAnchor.constraint(equalTo: noDataView.centerYAnchor, constant: -15)
+        ])
+        
+        NSLayoutConstraint.activate([
+            noDataLabelView.topAnchor.constraint(equalTo: noDataImageView.bottomAnchor, constant: 10),
+            noDataLabelView.centerXAnchor.constraint(equalTo: noDataImageView.centerXAnchor)
+        ])
+    }
+    
+    func disableNoDataView(){
+        noDataViewEnabled = false;
+        
+        noDataLabelView.removeFromSuperview();
+        noDataImageView.removeFromSuperview();
+        noDataView.removeFromSuperview();
+    }
+    
     
     private func configUI(){
         view.backgroundColor = .systemBackground;
@@ -142,7 +190,6 @@ class RidesViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             //width/height constraints already set in CTButton class by default
-            
             startButton.centerXAnchor.constraint(equalTo: ridesTableView.centerXAnchor),
             startButton.topAnchor.constraint(equalTo: ridesTableView.bottomAnchor, constant: 20)
         ])
