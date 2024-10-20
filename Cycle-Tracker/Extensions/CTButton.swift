@@ -69,9 +69,6 @@ class CTButtonMenu : UIButton {
         configuration?.imagePadding = 10;
         configuration?.imagePlacement = .trailing;
         
-        //quick hacky way to give a little bit more space between button and drop down menu
-        //configuration?.contentInsets = NSDirectionalEdgeInsets(top: 50, leading: 0, bottom: 45, trailing: 0)
-        
         translatesAutoresizingMaskIntoConstraints = false;
         showsMenuAsPrimaryAction = true; //allows menu to popup
         
