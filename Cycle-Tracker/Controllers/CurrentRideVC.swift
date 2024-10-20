@@ -67,9 +67,9 @@ class CurrentRideVC: UIViewController {
         view.backgroundColor = .systemGray6
         
         //request user permission to use location services while the app is in use
-        locManager.requestWhenInUseAuthorization();
         locManager.delegate = self;
-        
+        locManager.requestWhenInUseAuthorization();
+       
         weight = defaults.float(forKey: "Weight"); //value must exist if we are able to start a ride
         weight *= 0.453; //convert to kg for formula
         
