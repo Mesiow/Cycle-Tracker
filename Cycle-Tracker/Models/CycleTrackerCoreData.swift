@@ -30,8 +30,12 @@ extension RidesViewController {
         
         do {
             rides = try CoreDataContext.context.fetch(request);
-            if(rides.count <= 0){
-                print("no rides available");
+            if rides.count <= 0 {
+                presentNoDataView();
+            }else{
+                if noDataViewEnabled{
+                    disableNoDataView();
+                }
             }
         }catch{
             print("Error loading rides from core data \(error)");
