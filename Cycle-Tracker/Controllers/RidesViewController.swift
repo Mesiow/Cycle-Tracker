@@ -223,4 +223,20 @@ extension RidesViewController : UITableViewDelegate, UITableViewDataSource {
         
         return cell;
     }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .delete; //shows a delete indicator when swiping on a cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            tableView.beginUpdates();
+            
+            //remove model from core data and then refresh
+            deleteRideFromTable(at: indexPath);
+            tableView.deleteRows(at: [indexPath], with: .bottom);
+
+            tableView.endUpdates();
+        }
+    }
 }
