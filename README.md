@@ -14,7 +14,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/icon.png" alt="Logo" width="80" height="80">
+    <img src="Resources/appicon.png" alt="Logo" width="80" height="80">
   </a>
 </div>
 
@@ -37,7 +37,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
- <img src="/images/demo.gif" width="250" height="530"/>
+ <img src="/Resources/App.gif" width="250" height="530"/>
  
 * Bike ride tracking app with a simplistic UI
 * Entire UI done in code
